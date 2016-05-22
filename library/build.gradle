@@ -1,0 +1,136 @@
+buildscript {
+  repositories {
+    jcenter()
+//    maven { url 'https://maven.fabric.io/public' }
+  }
+  dependencies {
+    classpath 'com.android.tools.build:gradle:1.5.0'
+    classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.0'
+    classpath 'com.github.dcendents:android-maven-plugin:1.2'
+  }
+}
+group = 'jp-lorandi.tinygl'
+version = '1.0'
+
+apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
+
+repositories {
+  jcenter()
+}
+
+android {
+  compileSdkVersion 22
+//  buildToolsVersion "23.0.1"
+  buildToolsVersion "21.1.2"
+  defaultConfig {
+    minSdkVersion 16
+    targetSdkVersion 22
+    versionCode 1
+    versionName "1.0-SNAPSHOT"
+  }
+  buildTypes {
+    release {
+      minifyEnabled false
+//      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//      ext.betaDistributionEmailsFilePath="beta_distribution_emails.txt"
+    }
+    debug {
+//      ext.betaDistributionEmailsFilePath="beta_distribution_emails.txt"
+    }
+  }
+  dexOptions {
+    incremental true
+  }
+  lintOptions {
+    abortOnError false
+  }
+  productFlavors {
+  }
+}
+
+dependencies {
+  compile 'com.github.tony19:logback-android-core:1.1.1-4'
+  compile 'com.github.tony19:logback-android-classic:1.1.1-4'
+  compile 'org.slf4j:slf4j-api:1.7.6'
+}
+
+def siteUrl = 'https://github.com/bintray/bintray-examples'
+def gitUrl = 'https://github.com/bintray/bintray-examples.git'
+
+bintray {
+  user = 'jp-lorandi'
+  key = 'dd2081000d937f958bbe8cc790de899645d5551a'
+
+  configurations = ['archives'] //When uploading configuration files
+  pkg {
+    repo = 'android'
+    name = project.name
+    desc = 'Bintray aar publishing example'
+    websiteUrl = siteUrl
+    issueTrackerUrl = 'https://github.com/bintray/bintray-examples/issues'
+    vcsUrl = gitUrl
+    licenses = ['Apache-2.0']
+    labels = ['aar', 'android', 'example']
+    publicDownloadNumbers = true
+  }
+}
+
+install {
+  repositories.mavenInstaller {
+    pom {
+      project {
+        packaging 'aar'
+        name 'Bintray publish Gradle aar example'
+        url siteUrl
+        licenses {
+          license {
+            name 'The Apache Software License, Version 2.0'
+            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+          }
+        }
+        developers {
+          developer {
+            id 'jbaruch'
+            name 'Baruch Sadogursky'
+            email 'jbaruch@jfrog.com'
+          }
+        }
+        scm {
+          connection 'https://github.com/bintray/bintray-examples.git'
+          developerConnection 'https://github.com/bintray/bintray-examples.git'
+          url siteUrl
+
+        }
+      }
+    }
+  }
+}
+
+dependencies {
+  compile fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+task sourcesJar(type: Jar) {
+  from android.sourceSets.main.java.srcDirs
+  classifier = 'sources'
+}
+
+task javadoc(type: Javadoc) {
+  source = android.sourceSets.main.java.srcDirs
+  classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+  classifier = 'javadoc'
+  from javadoc.destinationDir
+}
+artifacts {
+  archives javadocJar
+  archives sourcesJar
+}
+
+task findConventions << {
+  println project.getConvention()
+}

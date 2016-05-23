@@ -59,9 +59,13 @@ dependencies {
 def siteUrl = 'https://github.com/bintray/bintray-examples'
 def gitUrl = 'https://github.com/bintray/bintray-examples.git'
 
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+// https://github.com/bintray/gradle-bintray-plugin
 bintray {
-  user = 'jp-lorandi'
-  key = 'dd2081000d937f958bbe8cc790de899645d5551a'
+  user = properties.getProperty("bintray.user")
+  key = properties.getProperty("bintray.apikey")
 
   configurations = ['archives'] //When uploading configuration files
   pkg {

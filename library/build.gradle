@@ -5,8 +5,8 @@ buildscript {
   }
   dependencies {
     classpath 'com.android.tools.build:gradle:1.5.0'
-    classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.0'
-    classpath 'com.github.dcendents:android-maven-plugin:1.2'
+    classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.6'
+    classpath 'com.github.dcendents:android-maven-gradle-plugin:1.3'
   }
 }
 group = 'jp-lorandi.tinygl'
@@ -65,7 +65,7 @@ bintray {
 
   configurations = ['archives'] //When uploading configuration files
   pkg {
-    repo = 'android'
+    repo = 'maven'
     name = project.name
     desc = 'Bintray aar publishing example'
     websiteUrl = siteUrl

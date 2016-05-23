@@ -17,7 +17,7 @@ public class Runner {
     this.runOnGlThreadQueueActive.add(callable);
   }
 
-  public void processQueue() {
+  public synchronized void processQueue() {
     List<Callable> pending = runOnGlThreadQueueActive;
     if (pending == runOnGlThreadQueueA) {
       runOnGlThreadQueueActive = runOnGlThreadQueueB;

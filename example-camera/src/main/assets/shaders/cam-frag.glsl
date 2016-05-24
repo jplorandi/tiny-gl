@@ -15,7 +15,10 @@ varying vec4 v_tex;
 varying vec4 v_col;
 
 void main() {
-    vec3 cam = texture2D(toolTexture, v_tex.xy).rgb;
+    vec2 ttex = v_tex.yx;
+    ttex.x = 1.0 - ttex.x;
+
+    vec3 cam = texture2D(toolTexture, ttex).rgb;
     gl_FragColor = vec4(cam, 1.0);
 
  // gl_FragColor = vec4(v_pos.xyz, 1.0);

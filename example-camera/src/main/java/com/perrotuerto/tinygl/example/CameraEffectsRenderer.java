@@ -168,6 +168,9 @@ public class CameraEffectsRenderer implements CeeSuiteRenderer {
     iResolution[0] = width;
     iResolution[1] = height;
 
+    Matrix.orthoM(mProjMatrix, 0,
+                  0, width, height, 0, -1, 1);
+
     openCamera(width, height);
 
     //TODO: request render
@@ -201,7 +204,14 @@ public class CameraEffectsRenderer implements CeeSuiteRenderer {
       camera = null;
     }
 
-    camera = Camera.open(0);
+    for (int i = 0; i < Camera.getNumberOfCameras(); i++) {
+      Camera.CameraInfo info = new Camera.CameraInfo();
+      Camera.getCameraInfo(i, info);
+      if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+        camera = Camera.open(i);
+        break;
+      }
+    }
     try {
       camera.setPreviewTexture(surfaceTexture);
     } catch (IOException ioe) {
@@ -258,6 +268,7 @@ public class CameraEffectsRenderer implements CeeSuiteRenderer {
     }
 
     if (currentMM != null) {
+//      log.debug("rendering MM");
       currentMM.setUniformVec2("iResolution", iResolution);
       currentMM.setUniformMatrix("u_MVPMatrix", mMVPMatrix);
       currentMM.setUniformVec4("time", time);

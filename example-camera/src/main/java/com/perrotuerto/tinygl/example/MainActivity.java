@@ -1,5 +1,6 @@
 package com.perrotuerto.tinygl.example;
 
+import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     GL20Surface gl20Surface = (GL20Surface) findViewById(R.id.surface);
     renderer = new CameraEffectsRenderer(this);
     gl20Surface.setRenderer(renderer);
+    gl20Surface.setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
 
     renderer.runOnGlThread(new Callable() {
       @Override
@@ -69,12 +71,12 @@ public class MainActivity extends AppCompatActivity {
             new String[]{"u_MVPMatrix", "time", "tod", "iResolution", "toolTexture", "framebuffer"}
         );
 
-//        cameraMesh = renderer.addMM(
-//            -1, -1, -1, -1,
-//            renderer.getCameraTexture(), plain, 1f, 1f, 1f, 1f);
         cameraMesh = renderer.addMM(
             -1, -1, -1, -1,
-            texture, hue, 1f, 1f, 1f, 1f);
+            renderer.getCameraTexture(), plain, 1f, 1f, 1f, 1f);
+//        cameraMesh = renderer.addMM(
+//            -1, -1, -1, -1,
+//            texture, fire, 1f, 1f, 1f, 1f);
 
         return null;
       }

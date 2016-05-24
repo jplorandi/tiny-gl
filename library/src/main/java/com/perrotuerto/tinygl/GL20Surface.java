@@ -51,7 +51,7 @@ public class GL20Surface extends GLSurfaceView {
   private void init(Context context) {
     this.assetManager = context.getAssets();
     if (GLUtils.karbon == null && !isInEditMode()) {
-      GLUtils.karbon = Typeface.createFromAsset(assetManager, "fonts/Karbon-Light.otf");
+//      GLUtils.karbon = Typeface.createFromAsset(assetManager, "fonts/Karbon-Light.otf");
     }
 
     try {

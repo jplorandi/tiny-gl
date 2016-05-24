@@ -8,30 +8,78 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager;
 
-import com.perrotuerto.com.example.R;
 import com.perrotuerto.tinygl.GL20Surface;
+import com.perrotuerto.tinygl.MaterialMesh;
+import com.perrotuerto.tinygl.core.ShaderProgram;
+import com.perrotuerto.tinygl.core.Texture;
+import com.perrotuerto.tinygl.core.TextureManager;
+
+import java.util.concurrent.Callable;
 
 public class MainActivity extends AppCompatActivity {
 
+  private CameraEffectsRenderer renderer;
+  private ShaderProgram plain;
+  private MaterialMesh cameraMesh;
+  private ShaderProgram fire;
+  private ShaderProgram hue;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
+    requestWindowFeature(Window.FEATURE_NO_TITLE);
+    getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                         WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
-    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-    setSupportActionBar(toolbar);
+    setContentView(R.layout.camera_main);
 
     GL20Surface gl20Surface = (GL20Surface) findViewById(R.id.surface);
-    gl20Surface.setRenderer(new CameraEffectsRenderer(this));
+    renderer = new CameraEffectsRenderer(this);
+    gl20Surface.setRenderer(renderer);
 
-    FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-    fab.setOnClickListener(new View.OnClickListener() {
+    renderer.runOnGlThread(new Callable() {
       @Override
-      public void onClick(View view) {
-        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-            .setAction("Action", null).show();
+      public Object call() throws Exception {
+        Texture texture = TextureManager.get("textures/tex16.png", true);
+
+        plain = ShaderProgram.get(
+            "shaders/simple-vert.glsl",
+            "shaders/cam-frag.glsl",
+            new String[]{"a_pos", "a_tex", "a_col"},
+            new String[]{"u_MVPMatrix", "time", "tod", "iResolution", "toolTexture", "framebuffer"}
+        );
+
+        fire = ShaderProgram.get(
+            "shaders/simple-vert.glsl",
+//            "shaders/cam-frag.glsl",
+            "shaders/fire-frag.glsl",
+            new String[]{"a_pos", "a_tex", "a_col"},
+            new String[]{"u_MVPMatrix", "time", "tod", "iResolution", "toolTexture", "framebuffer"}
+        );
+
+        hue = ShaderProgram.get(
+            "shaders/simple-vert.glsl",
+//            "shaders/cam-frag.glsl",
+            "shaders/hue-frag.glsl",
+            new String[]{"a_pos", "a_tex", "a_col"},
+            new String[]{"u_MVPMatrix", "time", "tod", "iResolution", "toolTexture", "framebuffer"}
+        );
+
+//        cameraMesh = renderer.addMM(
+//            -1, -1, -1, -1,
+//            renderer.getCameraTexture(), plain, 1f, 1f, 1f, 1f);
+        cameraMesh = renderer.addMM(
+            -1, -1, -1, -1,
+            texture, hue, 1f, 1f, 1f, 1f);
+
+        return null;
       }
     });
+
   }
 
   @Override

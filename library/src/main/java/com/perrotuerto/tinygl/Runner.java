@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 /**
- * @author jp.lorandi@cfyar.com Date: 10/3/15 Time: 6:55 PM
+ * @author jp.lorandi@cfyar.com Date: 10/3/15 Time: 6:55 PM                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 jjjjjjjjjjjj
  */
 public class Runner {
   private List<Callable> runOnGlThreadQueueA = new LinkedList<Callable>();

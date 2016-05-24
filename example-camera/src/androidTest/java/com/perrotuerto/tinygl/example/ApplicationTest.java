@@ -1,4 +1,4 @@
-package galeria.perrotuerto.com.pourlagallerie;
+package com.perrotuerto.tinygl.example;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

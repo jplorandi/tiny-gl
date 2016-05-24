@@ -1,4 +1,4 @@
-package galeria.perrotuerto.com.pourlagallerie;
+package com.perrotuerto.tinygl.example;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -9,6 +9,9 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.perrotuerto.com.example.R;
+import com.perrotuerto.tinygl.GL20Surface;
+
 public class MainActivity extends AppCompatActivity {
 
   @Override
@@ -17,6 +20,9 @@ public class MainActivity extends AppCompatActivity {
     setContentView(R.layout.activity_main);
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
+
+    GL20Surface gl20Surface = (GL20Surface) findViewById(R.id.surface);
+    gl20Surface.setRenderer(new CameraEffectsRenderer(this));
 
     FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
     fab.setOnClickListener(new View.OnClickListener() {

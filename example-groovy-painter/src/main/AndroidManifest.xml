@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.perrotuerto.tinygl.example">
+          package="com.perrotuerto.tinygl.painter">
 
     <application
             android:allowBackup="true"
@@ -9,7 +9,7 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
         <activity
-                android:name="com.perrotuerto.tinygl.example.MainActivity"
+                android:name="com.perrotuerto.tinygl.example.PaintActivity"
                 android:label="@string/app_name"
                 android:theme="@style/AppTheme.NoActionBar"
                 android:screenOrientation="portrait">
@@ -23,15 +23,15 @@
     <uses-permission android:name="android.permission.CAMERA" />
 
     <uses-feature
-        android:name="android.hardware.camera"
-        android:required="false" />
+            android:name="android.hardware.camera"
+            android:required="false" />
     <uses-feature
-        android:name="android.hardware.camera.autofocus"
-        android:required="false" />
+            android:name="android.hardware.camera.autofocus"
+            android:required="false" />
     <uses-feature
-        android:name="android.hardware.camera.front"
-        android:required="false" />
+            android:name="android.hardware.camera.front"
+            android:required="false" />
     <uses-feature
-        android:name="android.hardware.camera.front.autofocus"
-        android:required="false" />
+            android:name="android.hardware.camera.front.autofocus"
+            android:required="false" />
 </manifest>

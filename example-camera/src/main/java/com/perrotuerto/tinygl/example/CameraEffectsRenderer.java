@@ -7,10 +7,7 @@ import android.opengl.GLES20;
 import android.opengl.Matrix;
 import android.view.MotionEvent;
 
-import com.perrotuerto.tinygl.CeeSuiteRenderer;
-import com.perrotuerto.tinygl.MaterialMesh;
-import com.perrotuerto.tinygl.Renderable;
-import com.perrotuerto.tinygl.Runner;
+import com.perrotuerto.tinygl.*;
 import com.perrotuerto.tinygl.core.ShaderProgram;
 import com.perrotuerto.tinygl.core.Texture;
 import com.perrotuerto.tinygl.core.TextureManager;
@@ -19,10 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -32,35 +26,16 @@ import static com.perrotuerto.tinygl.GLUtils.checkGl20Error;
 /**
  * @author jp.lorandi@cfyar.com Date: 5/24/16 Time: 9:57 AM
  */
-public class CameraEffectsRenderer implements CeeSuiteRenderer {
+public class CameraEffectsRenderer extends AbstractRenderer {
 
   private static final Logger log =
       LoggerFactory.getLogger(CameraEffectsRenderer.class);
 
   private final Activity parent;
-  private Runner runner = new Runner();
 
   private Camera camera;
   private SurfaceTexture surfaceTexture;
   private Texture cameraTexture;
-
-  private float[] iCamera = new float[2];
-  private float[] iResolution = new float[2];
-  private float[] mProjMatrix = new float[16];
-  private float[] mVMatrix = new float[16];
-  private float[] mMVPMatrix = new float[16];
-
-  public static final int MILLISECONDS_IN_DAY = 24 * 60 * 60 * 1000;
-  public float[] time = new float[4];
-  public float[] tod = new float[2];
-  private long ltc = 0;
-  private float tfps = 0;
-  private float deltaTime;
-
-  private List<MaterialMesh> bucket = new ArrayList<MaterialMesh>();
-  private List<Renderable> renderBucket = new ArrayList<Renderable>();
-  private MaterialMesh currentMM;
-
 
 
   public CameraEffectsRenderer(Activity parent) {
@@ -93,11 +68,6 @@ public class CameraEffectsRenderer implements CeeSuiteRenderer {
 
     currentMM = materialMesh;
     return materialMesh;
-  }
-
-  @Override
-  public void runOnGlThread(Callable callable) {
-    runner.runOnGlThread(callable);
   }
 
   @Override
@@ -295,40 +265,6 @@ public class CameraEffectsRenderer implements CeeSuiteRenderer {
 
     surfaceTexture.updateTexImage();
     //surfaceTexture.getTransformMatrix();
-
-  }
-
-  private void setupInitialFrameState() {
-
-    GLES20.glClearColor(0f, 0f, 0f, 0f);
-    GLES20.glClear(GLES20.GL_DEPTH_BUFFER_BIT | GLES20.GL_COLOR_BUFFER_BIT);
-    GLES20.glEnable(GLES20.GL_CULL_FACE);
-    GLES20.glDisable(GLES20.GL_DEPTH_TEST);
-  }
-
-  private void computeTime() {
-    final Calendar calendar = Calendar.getInstance();
-    time[0] = calendar.get(Calendar.YEAR);
-    time[1] = calendar.get(Calendar.MONTH);
-    time[2] = calendar.get(Calendar.DAY_OF_MONTH);
-    long ctc = System.currentTimeMillis();
-    time[3] = (ctc % MILLISECONDS_IN_DAY) / 1000f;
-
-    tod[0] = (int) Math.floor(time[3]);
-    tod[1] = (time[3] - tod[0]) % 60;
-
-    long delta = ctc - ltc;
-    deltaTime = (delta / 1000f);
-    tfps = 1f / deltaTime;
-    ltc = ctc;
-
-//    if (fps != null)
-//      fps.post(new Runnable() {
-//        @Override
-//        public void run() {
-//          fps.setText(String.format("FPS: %.2f", tfps));
-//        }
-//      });
 
   }
 

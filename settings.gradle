@@ -1,1 +1,1 @@
-include ':library',":example-camera"
+include ':library',":example-camera", 'example-groovy-painter'

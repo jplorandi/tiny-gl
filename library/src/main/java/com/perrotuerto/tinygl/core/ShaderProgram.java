@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.microedition.khronos.opengles.GL11Ext;
@@ -45,6 +46,12 @@ public class ShaderProgram {
 
   private WeakReference<ShaderProgramKey> myKey;
 
+  public static ShaderProgram get(String pathToVertexProgram,
+                                  String pathToFragmentProgram,
+                                  List<String> attributes, List<String> uniforms) {
+    return get(pathToVertexProgram, pathToFragmentProgram, attributes.toArray(new String[0]), uniforms.toArray(new String[0]));
+
+  }
   public static ShaderProgram get(String pathToVertexProgram,
                                   String pathToFragmentProgram,
                                   String [] attributes, String [] uniforms) {
